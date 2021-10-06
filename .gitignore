@@ -1,2 +1,5 @@
-
+*.nextflow.log*
+.nextflow/
 *.code-workspace
+report.html*
+work/
