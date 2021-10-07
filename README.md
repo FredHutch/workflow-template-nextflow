@@ -89,3 +89,17 @@ opinionated list, and should be taken simply as one perspective on the topic.
 - Use `.toSortedList()` instead of `.collect()` for reproducible ordering
 - Add `set -Eeuo pipefail` to the header of any BASH script
 - Every process uses a `container`, which is defined as a `param.container__toolname` in `main.nf`
+
+## Going Further
+
+If you are interested in writing workflows in a way which can be best
+shared with the worldwide community of Nextflow developers, please join the 
+[nf-core](https://nf-co.re/) community. In addition to providing a catalog of
+increcibly useful workflows, this group of core bioinformaticians has created an entire
+software suite for authoring workflows using community-driven best practices.
+
+The nf-core codebase can be used to quickly create workflow templates (`nf-core create`)
+which are far more sophisticated and robust than this repository. The code here is
+for a quick-and-dirty launch into Nextflow. If you want to go deeper, connect with
+the other people around the world who have already put in the work to build a
+community, and you will go farther together.
