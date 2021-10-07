@@ -72,6 +72,12 @@ Software containers should be defined as parameters in `main.nf`, which allows
 the value to propagate automatically to all imported sub-workflows, while also
 being able to be overridden easily by the user if needs be.
 
+Practically speaking, this means that every process should have a `container`
+declared which follows the pattern `container "${params.container__toolname}"`,
+and which was set in `main.nf` with `params.container__toolname = "quay.io/org/image:tag"`.
+It is crucial that the parameter be set _before_ the subworkflows are imported, as
+shown in this example workflow.
+
 ## Workflow Style Guide
 
 While a workflow could be made in almost any way imaginable, there are some
@@ -82,3 +88,4 @@ opinionated list, and should be taken simply as one perspective on the topic.
 - Always publish files with `mode: 'copy', overwrite: true`
 - Use `.toSortedList()` instead of `.collect()` for reproducible ordering
 - Add `set -Eeuo pipefail` to the header of any BASH script
+- Every process uses a `container`, which is defined as a `param.container__toolname` in `main.nf`
