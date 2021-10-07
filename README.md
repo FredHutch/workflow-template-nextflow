@@ -28,6 +28,23 @@ The essential components of the workflow repository are:
 - `modules/`: Contains all of the sub-workflows which are used to organize large chunks of analysis
 - `templates/`: Contains all of the code which is executed in each individual step of the workflow
 
+## Parameter Inheritance
+
+When running a workflow you can tell it what to do by passing in parameters with
+`--param_name param_value`. To make this work easily in Nextflow, make sure to
+set up the default value at the top of `main.nf` (e.g. `params.param_name = 'default_value'`).
+If a user passes in a value, then `params.param_name` will have that value. If they
+do not, it will be `default_value`. The really useful thing about the `params` is that
+they are inherited by every sub-workflow and process that is invoked. In other words,
+without having to do _anything_ else, I can use `${params.param_name}` in one of the
+script files in `templates/`, and I know that it will contain the value that was provided
+by the user. 
+
+There are options to override this parameter inheritance if you want to get really fancy,
+but this default behavior is extremely useful if you just want to write code and not
+worry about explicitly piping together each of the variables into each sub-workflow
+as it is imported.
+
 ## Templates
 
 One of the options for defining the code that is run inside a Nextflow process
