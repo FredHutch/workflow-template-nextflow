@@ -89,6 +89,7 @@ opinionated list, and should be taken simply as one perspective on the topic.
 - Use `.toSortedList()` instead of `.collect()` for reproducible ordering
 - Add `set -Eeuo pipefail` to the header of any BASH script
 - Every process uses a `container`, which is defined as a `param.container__toolname` in `main.nf`
+- Never use `.baseName` to remove file extension, instead use (e.g.) `.name.replaceAll('.fastq.gz', '')`
 
 ## Going Further
 
