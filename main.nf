@@ -73,12 +73,16 @@ workflow {
         log.info"""
         User may specify --fastq_folder OR --manifest, but not both
         """.stripIndent()
+        // Exit out and do not run anything else
+        exit 1
     }
     if ( ! params.fastq_folder && ! params.manifest ){
         log.info"""
         User must specify --fastq_folder or --manifest.
         Run with --help for more details.
         """.stripIndent()
+        // Exit out and do not run anything else
+        exit 1
     }
 
     // If the --fastq_folder input option was provided
