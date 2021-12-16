@@ -3,37 +3,14 @@
 // Using DSL-2
 nextflow.enable.dsl=2
 
-// Assess quality of input data
-process fastqc_input {
-    container "${params.container__fastqc}"
-    
-    input:
-    tuple val(specimen), path(R1), path(R2)
-
-    output:
-    path "fastqc/*.zip", emit: zip
-    path "fastqc/*.html", emit: html
-
-    script:
-    template 'fastqc.sh'
-
-}
-
-// Assess quality of trimmed data
-process fastqc_trimmed {
-    container "${params.container__fastqc}"
-    
-    input:
-    tuple val(specimen), path(R1), path(R2)
-
-    output:
-    path "fastqc/*.zip", emit: zip
-    path "fastqc/*.html", emit: html
-
-    script:
-    template 'fastqc.sh'
-
-}
+// Import the fastqc and multiqc processes so that they can 
+// each be used in two places independently
+include { fastqc as fastqc_input } from './fastqc'
+include { fastqc as fastqc_trimmed } from './fastqc'
+// Using the output_subfolder parameter, we can publish the output from
+// each invocation of multiqc to a different location
+include { multiqc as multiqc_input } from './multiqc' addParams(output_subfolder: 'input')
+include { multiqc as multiqc_trimmed } from './multiqc' addParams(output_subfolder: 'quality_trimmed')
 
 // Perform quality trimming on the input FASTQ data
 process quality_trim {
@@ -48,38 +25,6 @@ process quality_trim {
 
     script:
     template 'quality_trim.sh'
-
-}
-
-// Combine all FASTQC data into a single report
-process multiqc_input {
-    container "${params.container__multiqc}"
-    publishDir "${params.output_folder}/input/", mode: 'copy', overwrite: true
-    
-    input:
-    path "*"
-
-    output:
-    path "multiqc_report.html"
-
-    script:
-    template 'multiqc.sh'
-
-}
-
-// Combine all FASTQC data into a single report
-process multiqc_trimmed {
-    container "${params.container__multiqc}"
-    publishDir "${params.output_folder}/quality_trimmed/", mode: 'copy', overwrite: true
-    
-    input:
-    path "*"
-
-    output:
-    path "multiqc_report.html"
-
-    script:
-    template 'multiqc.sh'
 
 }
 

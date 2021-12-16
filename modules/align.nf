@@ -3,6 +3,9 @@
 // Using DSL-2
 nextflow.enable.dsl=2
 
+// Import the multiqc process, while specifying the location for the outputs
+include { multiqc as multiqc_flagstats } from './multiqc' addParams(output_subfolder: 'alignments')
+
 // Index a genome for alignment with BWA MEM
 process bwa_index {
     container "${params.container__bwa}"
@@ -47,22 +50,6 @@ process flagstats {
 
     script:
     template 'flagstats.sh'
-
-}
-
-// Combine all flagstats data into a single report
-process multiqc_flagstats {
-    container "${params.container__multiqc}"
-    publishDir "${params.output_folder}/alignments/", mode: 'copy', overwrite: true
-    
-    input:
-    path "*"
-
-    output:
-    path "multiqc_report.html"
-
-    script:
-    template 'multiqc.sh'
 
 }
 
