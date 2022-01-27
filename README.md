@@ -32,7 +32,7 @@ The essential components of the workflow repository are:
 
 When running a workflow you can tell it what to do by passing in parameters with
 `--param_name param_value`. To make this work easily in Nextflow, make sure to
-set up the default value at the top of `main.nf` (e.g. `params.param_name = 'default_value'`).
+set up the default value in `nextflow.config` in the `params` scope (e.g. `params{param_name = 'default_value'}`).
 If a user passes in a value, then `params.param_name` will have that value. If they
 do not, it will be `default_value`. The really useful thing about the `params` is that
 they are inherited by every sub-workflow and process that is invoked. In other words,
@@ -44,6 +44,42 @@ There are options to override this parameter inheritance if you want to get real
 but this default behavior is extremely useful if you just want to write code and not
 worry about explicitly piping together each of the variables into each sub-workflow
 as it is imported.
+
+### User Input of Parameters
+
+There are two ways that users can most easily provide their own inputs to a workflow,
+with command-line flags or with a params file.
+
+On the command line, parameters are provided using two dashes before the parameter
+name, e.g. `--param_name value`. One limitation of this approach is that the provided
+value will be interpreted as a string. The best example of this is the edge case of the
+the negative boolean (`false`), which will be interpreted by Nextflow as a string (`'false'`).
+The second limitation is that the command line string starts to become rather long.
+Another consideration of providing parameters on the command line is that they may be
+interpreted by the shell before execution. For example, in the context of a BASH script
+`--param_name *.fastq.gz` will first be expanded to the list of files which match that
+pattern (e.g., `--param_name 1.fastq.gz 2.fastq.gz 3.fastq.gz`), which may not be the
+intention. This behavior can be prevented explicitly with single-quotes in BASH, with
+`--param_name '*.fastq.gz'` being unaltered by the shell before execution.
+
+By using a params file, the user is able to more explicitly define the set of parameters
+which will be provided. The params file can be formatted as JSON or YAML, with the example
+below shown in JSON.
+
+```
+{
+    "param_name": "*.fastq.gz",
+    "second_param": false,
+    "third_param": 5
+}
+```
+
+The params file is provided by the user with the `-params-file` flag.
+While this approach requires the user to create an additional file, it also provides a
+method for defining variables without worrying about the nuances of the shell interpreter.
+
+If both methods are used for providing parameters, the command line flags will take
+precedence over the params file ([docs](https://www.nextflow.io/docs/latest/config.html)).
 
 ## Templates
 
@@ -74,7 +110,7 @@ being able to be overridden easily by the user if needs be.
 
 Practically speaking, this means that every process should have a `container`
 declared which follows the pattern `container "${params.container__toolname}"`,
-and which was set in `main.nf` with `params.container__toolname = "quay.io/org/image:tag"`.
+and which was set in `nextflow.config` with `params{container__toolname = "quay.io/org/image:tag"}`.
 It is crucial that the parameter be set _before_ the subworkflows are imported, as
 shown in this example workflow.
 
