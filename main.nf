@@ -78,14 +78,17 @@ workflow {
         // to
         // [specimen, R1, R2]
         // with the map{} expression
+
+        // Define the pattern which will be used to find the FASTQ files
+        fastq_pattern = "${params.fastq_folder}/*_R{1,2}*fastq.gz"
+
+        // Set up a channel from the pairs of files found with that pattern
         fastq_ch = Channel
-            .fromFilePairs("${params.fastq_folder}/*_R{1,2}*fastq.gz")
+            .fromFilePairs(fastq_pattern)
+            .ifEmpty { error "No files found matching the pattern ${fastq_pattern}" }
             .map{
                 [it[0], it[1][0], it[1][1]]
             }
-
-        // Tell the user if no data can be found
-        fastq_ch.ifEmpty("No input data found in ${params.fastq_folder}")
 
     // Otherwise, they must have provided --manifest
     } else {
