@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -Eeuo pipefail
+set -euo pipefail
 
 echo "Specimen: $specimen"
 echo "R1: $R1"

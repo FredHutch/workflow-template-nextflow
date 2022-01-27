@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -Eeuo pipefail
+set -euo pipefail
 
 echo "Processing specimen: $specimen"
 echo "R1: $R1"

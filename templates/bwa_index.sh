@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -Eeuo pipefail
+set -euo pipefail
 
 echo "Input: $genome_fasta"
 

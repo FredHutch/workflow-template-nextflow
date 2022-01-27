@@ -1,5 +1,5 @@
 #!/bin/bash
 
-set -Eeuo pipefail
+set -euo pipefail
 
 multiqc .
