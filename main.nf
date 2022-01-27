@@ -3,23 +3,7 @@
 // Using DSL-2
 nextflow.enable.dsl=2
 
-// Set default parameters
-params.help = false
-params.fastq_folder = false
-params.manifest = false
-params.genome_fasta = false
-params.output_folder = false
-
-// Quality trimming
-params.min_qvalue = 20
-params.min_align_score = 40
-
-// Set the containers to use for each component
-params.container__cutadapt = "quay.io/biocontainers/cutadapt:3.5--py36hc5360cc_0"
-params.container__fastqc = "quay.io/biocontainers/fastqc:0.11.9--hdfd78af_1"
-params.container__multiqc = "quay.io/biocontainers/multiqc:1.11--pyhdfd78af_0"
-params.container__bwa = "quay.io/hdc-workflows/bwa-samtools:latest"
-params.container__pandas = "quay.io/fhcrc-microbiome/python-pandas:0fd1e29"
+// All of the default parameters are being set in `nextflow.config`
 
 // Import sub-workflows
 include { validate_manifest } from './modules/manifest'
