@@ -28,6 +28,9 @@ The essential components of the workflow repository are:
 - `modules/`: Contains all of the sub-workflows which are used to organize large chunks of analysis
 - `templates/`: Contains all of the code which is executed in each individual step of the workflow
 
+To help you get up and running with this structure, download the minimal template
+directory provided in the zip archive `templates/template_workflow.zip`.
+
 ## Parameter Inheritance
 
 When running a workflow you can tell it what to do by passing in parameters with
